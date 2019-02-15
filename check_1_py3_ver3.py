@@ -63,8 +63,7 @@ def mc(config,te,mc_step,n):
                 a = int(np.random.uniform(0, n))
                 b = int(np.random.uniform(0, n))
                 s =  config[a, b]
-#                nb = config[(a+1)%n,b] + config[a,(b+1)%n] + config[(a-1)%n,b]
-#                + config[a,(b-1)%n]
+                
                 cost = 2*s*np.sum(nnb(config,a,b))
                 if cost <= 0:
                     s *= -1
@@ -89,21 +88,8 @@ def mc_k(config,te,mc_step,n):
             s2 =  config[a2,b2]
             
             if s1 != s2:
-                #x = 0
-                    
-            
-                #nb1 = config[(a1+1)%(n-1),b1] + config[a1,(b1+1)%(n-1)] 
-                #+ config[(a1-1)%(n-1),b1] + config[a1,(b1-1)%(n-1)]
-                #nb2 = config[(a2+1)%(n-1),b2] + config[a2,(b2+1)%(n-1)] 
-                #+ config[(a2-1)%(n-1),b2] + config[a2,(b2-1)%(n-1)]          
-                
-                #nb = nnb(config,a1,a2)
-                
-                #cost1 = 2*s1*nnb(config,a1,a2)
-                #cost2 = 2*s2*nns
-                #cost =  s1*(nb1-nb2) 
+
                 cost = 2*s1*np.sum(nnb(config,a1,b1)) + 2*s2*np.sum(nnb(config,a2,b2))
-                #print (cost)
                 
                 if a1+1==a2 and b1==b2: cost+=4
                 elif a1-1==a2 and b1==b2: cost+=4
@@ -117,7 +103,6 @@ def mc_k(config,te,mc_step,n):
                 elif np.random.rand() < np.exp(-(1*cost)/te):
                     config[a1, b1] = s2
                     config[a2, b2] = s1
-            #k += 1
         return config
 """
 Measurement functions, taking lists of data to generate means and required 
@@ -129,7 +114,7 @@ def Measure_Energy(config,n):
     for i in range(len(config)):
         for j in range(len(config)):
             S = config[i,j]
-            nb = nnb(config,i,j)#config[(i+1)%n-1, j] + config[i,(j+1)%n-1] + config[(i-1)%n-1, j]+ config[i,(j-1)%n-1]
+            nb = nnb(config,i,j)
             energy += -1*S*(nb[1]+nb[2])
     e2 = energy**2
     #print(energy/4)
