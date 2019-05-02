@@ -72,7 +72,7 @@ def mc(config, te, n):
 		choice = np.random.choice([0,1,2])
 		for m in range(len(nn)):
 			cost =+ kc(choice,nn[m])
-		de = -1*cost - (-1*cost_1)
+		de = -1*s*cost - (-1*s*cost_1)
 		if de <= 0:
 			s = choice
 		elif np.random.rand() < np.exp(-(1 * de) / te):
@@ -112,17 +112,32 @@ def frac(config,n):
 
 	return s1,s2,s3
 
+def updatefig_1(*args):
+    im.set_data(mc(ani_config,t,n))
+    return im,
+
 n = 50
-config = init(n)
-t = 0.5
-sweep = 1000
+# config = init(n)
+t = 0.01
+# sweep = 1000
+#
+# for i in range(sweep):
+# 	mc(config,t,n)
+# 	e = energy(config,n)
+# 	st1,st2,st3 = frac(config,n)
+# 	print(st1,st2,st3)
+# 	print(e)
 
-for i in range(sweep):
-	mc(config,t,n)
-	e = energy(config,n)
-	st1,st2,st3 = frac(config,n)
-	print(st1,st2,st3)
-	print(e)
+ani_config = init(n)
+fig = plt.figure()
+im = plt.imshow(mc(ani_config,t,n), animated=True)
+plt.title(t)
 
+for i in range(5):
+    updatefig_1()
+
+ani = animation.FuncAnimation(fig, updatefig_1 ,interval=25, blit=True
+                              ,frames = 500,repeat = True)
+plt.show()
 
 
